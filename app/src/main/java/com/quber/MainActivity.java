@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         myFragmentPagerAdapter.addFragment(new Scanner(), "Scanner");
-        myFragmentPagerAdapter.addFragment(new GeneratorCam(), "Generator_1");
-        myFragmentPagerAdapter.addFragment(new GeneratorString(), "Generator_2");
+        myFragmentPagerAdapter.addFragment(new GeneratorCam(), "GeneratorCam");
+        myFragmentPagerAdapter.addFragment(new GeneratorString(), "GeneratorString");
         mViewPager.setAdapter(myFragmentPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

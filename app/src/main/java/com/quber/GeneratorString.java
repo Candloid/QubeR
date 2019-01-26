@@ -1,18 +1,45 @@
 package com.quber;
 
-
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.quber.utility.QRCodeGenerator;
 
 public class GeneratorString extends Fragment {
+
+    private static final String TAG = "GeneratorString";
+    private EditText editText;
+    private EditText editText2;
+    private EditText editText3;
+    private Button button;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_generator_string, container, false);
+        View view = inflater.inflate(R.layout.fragment_generator_string, container, false);
+        editText = (EditText) view.findViewById(R.id.editText);
+        editText2 = (EditText) view.findViewById(R.id.editText2);
+        editText3 = (EditText) view.findViewById(R.id.editText3);
+        button = (Button) view.findViewById(R.id.button5);
+        button.setOnClickListener(v -> generate(v));
+        return view;
+    }
+
+    private void generate(View view){
+        Bitmap qubeRCode = QRCodeGenerator.generateFromString(editText.getText().toString(),
+                editText2.getText().toString(),
+                editText3.getText().toString());
+        boolean saveResult = QRCodeGenerator.saveToGallery(qubeRCode, getActivity().getContentResolver());
+        if(saveResult)
+            Toast.makeText(getActivity(), "Check your gallery!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
     }
 }

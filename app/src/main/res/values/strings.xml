@@ -6,4 +6,9 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="camera_button">Open up the camera</string>
+    <string name="scanned_qr_1">First QR</string>
+    <string name="scanned_qr_2">Second QR</string>
+    <string name="scanned_qr_3">Third QR</string>
 </resources>
