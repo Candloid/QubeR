@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "112638701689",
+    "firebase_url": "https://quber-6bcab.firebaseio.com",
+    "project_id": "quber-6bcab",
+    "storage_bucket": "quber-6bcab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112638701689:android:1e3ab052e2e4aca7",
+        "android_client_info": {
+          "package_name": "com.quber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112638701689-andnuuo70prb458hsvjuf0spo17gr8aa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Ezprp55nzgVDrTB5tCRe2H3rkes7myw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
