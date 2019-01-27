@@ -23,6 +23,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.quber.utility.ChannelManager;
+import com.quber.utility.PopUp;
 import com.quber.utility.QRCodeGenerator;
 
 import java.io.File;
@@ -90,9 +91,15 @@ public class GeneratorCam extends Fragment {
         Bitmap qubeRCode = ChannelManager.generateQubeRCode(bitmapArr[0], bitmapArr[1], bitmapArr[2]);
 //        String savedImageURL = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), cubeRCode, "CubeRCode", "Generated CubeRCode");
 //        Toast.makeText(getActivity(), savedImageURL, Toast.LENGTH_LONG).show();
-        boolean saveResult = QRCodeGenerator.saveToGallery(qubeRCode, getActivity().getContentResolver());
-        if(saveResult)
+        File file = QRCodeGenerator.saveToGallery(qubeRCode, getActivity().getContentResolver());
+        if(file != null) {
             Toast.makeText(getActivity(), "Check your gallery!", Toast.LENGTH_SHORT).show();
+            //This is where I show pop up screen
+            Intent intent = new Intent(getContext(), PopUp.class);
+            intent.putExtra("qubeRCode", QRCodeGenerator.convertIntoByteArray(qubeRCode));
+            intent.putExtra("file", file);
+            startActivity(intent);
+        }
         else
             Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
     }

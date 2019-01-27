@@ -12,6 +12,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -46,7 +47,7 @@ public class QRCodeGenerator {
         return qubeRCode;
     }
 
-    public static boolean saveToGallery(Bitmap qubeRCode, ContentResolver contentResolver){
+    public static File saveToGallery(Bitmap qubeRCode, ContentResolver contentResolver){
         String path = Environment.getExternalStorageDirectory().toString();
         File file = new File(path, "CubeRCOde.jpg");
         try(FileOutputStream out = new FileOutputStream(file)){
@@ -54,10 +55,16 @@ public class QRCodeGenerator {
             out.flush();
             out.close();
             MediaStore.Images.Media.insertImage(contentResolver, file.getAbsolutePath(), file.getName(), "Generated CubeRCode");
-            return true;
+            return file;
         }catch(Exception e){
             e.printStackTrace();
         }
-        return false;
+        return null;
+    }
+
+    public static byte[] convertIntoByteArray(Bitmap bm){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }

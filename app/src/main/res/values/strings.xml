@@ -11,4 +11,5 @@
     <string name="scanned_qr_1">First QR</string>
     <string name="scanned_qr_2">Second QR</string>
     <string name="scanned_qr_3">Third QR</string>
+    <string name="pick_from_gallery">Pick from gallery</string>
 </resources>
