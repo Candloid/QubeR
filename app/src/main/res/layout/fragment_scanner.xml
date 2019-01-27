@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".Scanner">
 
-    <Button
+    <ImageButton
         android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,11 +17,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="scanQR"
-        android:text="@string/camera_button"
+        android:src="@drawable/camicon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,13 +30,13 @@ import static android.app.Activity.RESULT_OK;
 public class Scanner extends Fragment {
     private static final String TAG = "Scanner";
     private final int QR_SCAN_REQ_CODE = 100;
-    private Button cameraButton;
+    private ImageButton cameraButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
-        cameraButton = (Button) view.findViewById(R.id.cameraButton);
+        cameraButton = (ImageButton) view.findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(v -> scanQR(v));
         return view;
     }
