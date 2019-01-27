@@ -2,6 +2,7 @@ package com.quber;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -62,8 +63,12 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, RequestCameraPermissionID);
         }
 
+        // Toolbar (above tabs) initialized
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // modifies the toolbar background
+        toolbar.setBackgroundColor(Color.parseColor("#291770"));
 
         myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
