@@ -51,8 +51,7 @@ public class PopUp extends Activity {
 
     private void shareOnClick(File file){
         Uri uri = Uri.fromFile(file);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setType("image/*");
         if (uri != null) {
@@ -61,7 +60,7 @@ public class PopUp extends Activity {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         if (intent.resolveActivity(getPackageManager()) != null)
-            startActivity(intent);
+            startActivity(Intent.createChooser(intent, "Share"));
         else
             Toast.makeText(this, "No app found!", Toast.LENGTH_LONG);
     }
