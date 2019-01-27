@@ -1,3 +1,7 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber;
 
 import android.Manifest;
@@ -75,8 +79,9 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         myFragmentPagerAdapter.addFragment(new Scanner(), "Scanner");
-        myFragmentPagerAdapter.addFragment(new GeneratorCam(), "GeneratorCam");
-        myFragmentPagerAdapter.addFragment(new GeneratorString(), "GeneratorString");
+        myFragmentPagerAdapter.addFragment(new GeneratorCam(), "Generator");
+//        myFragmentPagerAdapter.addFragment(new GeneratorCam(), "GeneratorCam");
+//        myFragmentPagerAdapter.addFragment(new GeneratorString(), "GeneratorString");
         mViewPager.setAdapter(myFragmentPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

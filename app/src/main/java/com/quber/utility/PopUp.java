@@ -1,3 +1,7 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber.utility;
 
 import android.app.Activity;
@@ -10,6 +14,7 @@ import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.quber.R;
 
@@ -55,6 +60,9 @@ public class PopUp extends Activity {
             intent.addFlags(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
-        startActivity(intent);
+        if (intent.resolveActivity(getPackageManager()) != null)
+            startActivity(intent);
+        else
+            Toast.makeText(this, "No app found!", Toast.LENGTH_LONG);
     }
 }

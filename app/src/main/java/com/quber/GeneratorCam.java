@@ -1,10 +1,13 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber;
 
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,11 +28,11 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.quber.utility.ChannelManager;
+import com.quber.utility.Obfuscator;
 import com.quber.utility.PopUp;
 import com.quber.utility.QRCodeGenerator;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -40,9 +45,10 @@ public class GeneratorCam extends Fragment {
     private Button cameraButton2;
     private Button cameraButton3;
     private Button generateButton;
-    private TextView textView1;
-    private TextView textView2;
-    private TextView textView3;
+//    private TextView textView1, textView2, textView3;
+    private EditText textView1, textView2, textView3;
+    private EditText password1, password2, password3;
+    private ToggleButton tb1, tb2, tb3;
     private Bitmap[] bitmapArr;
 
     @Override
@@ -55,11 +61,28 @@ public class GeneratorCam extends Fragment {
         cameraButton2.setOnClickListener(v -> scanQR(v, cameraButton2.getId()));
         cameraButton3 = (Button) view.findViewById(R.id.button3);
         cameraButton3.setOnClickListener(v -> scanQR(v, cameraButton3.getId()));
-        textView1 = (TextView) view.findViewById(R.id.textView);
-        textView2 = (TextView) view.findViewById(R.id.textView2);
-        textView3 = (TextView) view.findViewById(R.id.textView3);
+//        textView1 = (TextView) view.findViewById(R.id.codeC);
+//        textView2 = (TextView) view.findViewById(R.id.codeM);
+//        textView3 = (TextView) view.findViewById(R.id.codeY);
+        textView1 = (EditText) view.findViewById(R.id.codeC);
+        textView2 = (EditText) view.findViewById(R.id.codeM);
+        textView3 = (EditText) view.findViewById(R.id.codeY);
+
+        tb1 = (ToggleButton) view.findViewById(R.id.obfuscateC);
+        password1 = (EditText) view.findViewById(R.id.passwordC);
+
+        tb2 = (ToggleButton) view.findViewById(R.id.obfuscateM);
+        password2 = (EditText) view.findViewById(R.id.passwordM);
+
+        tb3 = (ToggleButton) view.findViewById(R.id.obfuscateY);
+        password3 = (EditText) view.findViewById(R.id.passwordY);
+
+        tb1.setOnClickListener(v -> updateVisibility(tb1,password1));
+        tb2.setOnClickListener(v -> updateVisibility(tb2,password2));
+        tb3.setOnClickListener(v -> updateVisibility(tb3,password3));
+
         bitmapArr = new Bitmap[3];
-        generateButton = (Button) view.findViewById(R.id.button4);
+        generateButton = (Button) view.findViewById(R.id.generateQubeR);
         generateButton.setOnClickListener(v -> generateQR(v, bitmapArr));
         return view;
     }
@@ -134,13 +157,25 @@ public class GeneratorCam extends Fragment {
                         for (FirebaseVisionBarcode barcode: barcodes) {
                             switch (index){
                                 case 0:
-                                    textView1.setText(barcode.getRawValue());
+                                    if (tb1.isChecked())
+                                        textView1.setText(Obfuscator.obfuscateString(barcode.getRawValue(),
+                                                password1.getText().toString(),false));
+                                    else
+                                        textView1.setText(barcode.getRawValue());
                                     break;
                                 case 1:
-                                    textView2.setText(barcode.getRawValue());
+                                    if (tb2.isChecked())
+                                        textView2.setText(Obfuscator.obfuscateString(barcode.getRawValue(),
+                                                password2.getText().toString(),false));
+                                    else
+                                        textView2.setText(barcode.getRawValue());
                                     break;
                                 case 2:
-                                    textView3.setText(barcode.getRawValue());
+                                    if (tb3.isChecked())
+                                        textView3.setText(Obfuscator.obfuscateString(barcode.getRawValue(),
+                                                password3.getText().toString(),false));
+                                    else
+                                        textView3.setText(barcode.getRawValue());
                                     break;
                                 default:
                                     return;
@@ -151,9 +186,16 @@ public class GeneratorCam extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "We Failed!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void updateVisibility(ToggleButton tb, EditText password) {
+        if(tb.isChecked())
+            password.setVisibility(View.VISIBLE);
+        else
+            password.setVisibility(View.INVISIBLE);
     }
 
 }

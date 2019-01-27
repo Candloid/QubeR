@@ -1,3 +1,7 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber.utility;
 
 //import android.support.annotation.Nullable;

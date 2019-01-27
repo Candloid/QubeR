@@ -1,3 +1,7 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber;
 
 import android.content.Intent;

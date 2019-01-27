@@ -1,3 +1,7 @@
+/*
+author: Ayberk Aksoy
+ */
+
 package com.quber;
 
 
@@ -13,8 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +31,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.quber.utility.ChannelManager;
+import com.quber.utility.Obfuscator;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -37,6 +45,9 @@ public class Scanner extends Fragment {
     private final int QR_SCAN_GALLERY_REQ_CODE = 101;
     private ImageButton cameraButton;
     private Button galleryButton;
+    private ToggleButton tb1, tb2, tb3;
+    private TextView code1, code2, code3;
+    private EditText password1, password2, password3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +58,21 @@ public class Scanner extends Fragment {
         galleryButton = (Button) view.findViewById(R.id.galleryButton);
         galleryButton.setOnClickListener(v -> scanQRUsingGallery(v));
 
+        tb1 = (ToggleButton) view.findViewById(R.id.obfuscateC);
+        password1 = (EditText) view.findViewById(R.id.passwordC);
+        code1 = (TextView) view.findViewById(R.id.codeC);
+
+        tb2 = (ToggleButton) view.findViewById(R.id.obfuscateM);
+        password2 = (EditText) view.findViewById(R.id.passwordM);
+        code2 = (TextView) view.findViewById(R.id.codeM);
+
+        tb3 = (ToggleButton) view.findViewById(R.id.obfuscateY);
+        password3 = (EditText) view.findViewById(R.id.passwordY);
+        code3 = (TextView) view.findViewById(R.id.codeY);
+
+        tb1.setOnClickListener(v -> updateVisibility(tb1,password1));
+        tb2.setOnClickListener(v -> updateVisibility(tb2,password2));
+        tb3.setOnClickListener(v -> updateVisibility(tb3,password3));
         return view;
     }
 
@@ -76,8 +102,11 @@ public class Scanner extends Fragment {
 
     private void recognizeQR(Bitmap qrPhoto){
         Bitmap[] qrArr = ChannelManager.analyzeQubeRCode(qrPhoto, true);
-        for(Bitmap qr : qrArr){
-            analyzeQRCode(qr);
+//        for(Bitmap qr : qrArr){
+//            analyzeQRCode(qr);
+//        }
+        for(int qrId = 0; qrId < qrArr.length; qrId++){
+            analyzeQRCode(qrArr[qrId], qrId);
         }
     }
 
@@ -92,27 +121,76 @@ public class Scanner extends Fragment {
         startActivityForResult(intent, QR_SCAN_GALLERY_REQ_CODE);
     }
 
-    private void analyzeQRCode(Bitmap qrPhoto){
+//    private void analyzeQRCode(Bitmap qrPhoto, int qrId){
+//        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(qrPhoto);
+//        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
+//                .getVisionBarcodeDetector();
+//        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
+//                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+//                    @Override
+//                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+//                        for (FirebaseVisionBarcode barcode: barcodes) {
+//                            String rawValue = barcode.getRawValue();
+//                            int valueType = barcode.getValueType();
+//                            String result = "rawValue: " + rawValue + "\nvalueType: " + valueType;
+//                            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getActivity(), "We Failed!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+
+    private void analyzeQRCode(Bitmap qrPhoto, int qrId) {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(qrPhoto);
         FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
                 .getVisionBarcodeDetector();
         Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
-                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
-                    @Override
-                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-                        for (FirebaseVisionBarcode barcode: barcodes) {
-                            String rawValue = barcode.getRawValue();
-                            int valueType = barcode.getValueType();
-                            String result = "rawValue: " + rawValue + "\nvalueType: " + valueType;
-                            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
-                        }
+                .addOnSuccessListener(b -> successfulDetect(b, qrId))
+                .addOnFailureListener(f -> Toast.makeText(getActivity(), "Code retrieval unsuccessful!", Toast.LENGTH_SHORT).show());
+    }
+
+    private void successfulDetect(List<FirebaseVisionBarcode> barcodes, int qrId){
+        for (FirebaseVisionBarcode barcode: barcodes) {
+            String rawValue = barcode.getRawValue();
+            switch (qrId) {
+                case 0:
+                    if (tb1.isChecked()){
+                        rawValue = Obfuscator.obfuscateString(rawValue,
+                                password1.getText().toString(),true);
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "We Failed!", Toast.LENGTH_SHORT).show();
+                    code1.setText(rawValue);
+                    break;
+                case 1:
+                    if (tb2.isChecked()){
+                        rawValue = Obfuscator.obfuscateString(rawValue,
+                                password2.getText().toString(),true);
                     }
-                });
+                    code2.setText(rawValue);
+                    break;
+                case 2:
+                    if (tb3.isChecked()){
+                        rawValue = Obfuscator.obfuscateString(rawValue,
+                                password3.getText().toString(),true);
+                    }
+                    code3.setText(rawValue);
+                    break;
+            }
+//            String rawValue = barcode.getRawValue();
+//            int valueType = barcode.getValueType();
+//            String result = "rawValue: " + rawValue + "\nvalueType: " + valueType;
+//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateVisibility(ToggleButton tb, EditText password) {
+        if(tb.isChecked())
+            password.setVisibility(View.VISIBLE);
+        else
+            password.setVisibility(View.INVISIBLE);
     }
 }
