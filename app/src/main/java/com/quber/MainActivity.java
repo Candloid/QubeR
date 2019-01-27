@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // modifies the toolbar background
+        // modifies the toolbar background.
         toolbar.setBackgroundColor(Color.parseColor("#291770"));
 
         myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
