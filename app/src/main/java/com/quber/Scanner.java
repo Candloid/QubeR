@@ -46,7 +46,7 @@ public class Scanner extends Fragment {
     private ImageButton cameraButton;
     private Button galleryButton;
     private ToggleButton tb1, tb2, tb3;
-    private TextView code1, code2, code3;
+    private EditText code1, code2, code3;
     private EditText password1, password2, password3;
 
     @Override
@@ -60,15 +60,15 @@ public class Scanner extends Fragment {
 
         tb1 = (ToggleButton) view.findViewById(R.id.obfuscateC);
         password1 = (EditText) view.findViewById(R.id.passwordC);
-        code1 = (TextView) view.findViewById(R.id.codeC);
+        code1 = (EditText) view.findViewById(R.id.codeC);
 
         tb2 = (ToggleButton) view.findViewById(R.id.obfuscateM);
         password2 = (EditText) view.findViewById(R.id.passwordM);
-        code2 = (TextView) view.findViewById(R.id.codeM);
+        code2 = (EditText) view.findViewById(R.id.codeM);
 
         tb3 = (ToggleButton) view.findViewById(R.id.obfuscateY);
         password3 = (EditText) view.findViewById(R.id.passwordY);
-        code3 = (TextView) view.findViewById(R.id.codeY);
+        code3 = (EditText) view.findViewById(R.id.codeY);
 
         tb1.setOnClickListener(v -> updateVisibility(tb1,password1));
         tb2.setOnClickListener(v -> updateVisibility(tb2,password2));
